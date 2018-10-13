@@ -2,9 +2,12 @@
 const request = require('supertest');
 const should = require('should');
 const app = require('../../index');
+const models = require('../../models');
 
-describe('GET /users는', () => {
+
+describe.only('GET /users는', () => {
     describe('성공 시', () => {
+
         it('유저 객체를 담은 배열로 응답한', (done) => {
             request(app)
                 .get('/users')
@@ -33,7 +36,7 @@ describe('GET /users는', () => {
     });
 });
 
-describe('GET /users/1는', () => {
+describe.only('GET /users/1는', () => {
 
     describe('성공 시', () => {
         it('id가 1인 유저 객체를 반환한다.', (done) => {
@@ -61,7 +64,7 @@ describe('GET /users/1는', () => {
     });
 });
 
-describe('DELTE /users/1는', () => {
+describe.only('DELTE /users/1는', () => {
     describe('성공 시', () => {
         it('204를 응답한다.', (done) => {
             request(app)
@@ -80,7 +83,11 @@ describe('DELTE /users/1는', () => {
     });
 })
 
-describe('POST /users', () => {
+describe.only('POST /users', () => {
+    const users = [{ name: 'alice' }, { name: 'bek' }, { name: 'chris' }];
+    before(() => { return models.sequelize.sync({ force: true }) });
+    before(() => { return models.User.bulkCreate(users) });
+
     describe('성공 시', () => {
         let body, name = 'deniel';
         before(done => {
@@ -119,7 +126,7 @@ describe('POST /users', () => {
     })
 });
 
-describe('PUT /users/:id', () => {
+describe.only('PUT /users/:id', () => {
     describe('성공 시', () => {
         const name = 'chally';
         it('변경된 name을 응답한다.', (done) => {
